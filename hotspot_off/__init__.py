@@ -8,7 +8,7 @@ class Hotspot_offPlugin(octoprint.plugin.SettingsPlugin, octoprint.plugin.AssetP
     def on_startup(self, host, port):
         args = ['netconnectcli', 'stop_ap']
         try:
-            r = subprocess.check_call(args)
+            r = subprocess.check_output(args)
         except Exception as e:
             r = 'Failed to run stop command.'
         finally:
