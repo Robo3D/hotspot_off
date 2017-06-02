@@ -10,9 +10,11 @@ from __future__ import absolute_import
 # Take a look at the documentation on what other plugin mixins are available.
 
 import octoprint.plugin
-import subprocess
 
-class Hotspot_offPlugin(octoprint.plugin.StartupPlugin):
+class Hotspot_offPlugin(octoprint.plugin.SettingsPlugin,
+                        octoprint.plugin.AssetPlugin,
+                        octoprint.plugin.TemplatePlugin,
+                        octoprint.plugin.StartupPlugin):
 
     def on_startup(self, host, port):
         args = ['netconnectcli', 'stop_ap']
@@ -22,6 +24,24 @@ class Hotspot_offPlugin(octoprint.plugin.StartupPlugin):
             r = 'Failed to run stop command.'
         finally:
             self._logger.info('### Stop Hotspot Results: {}'.format(r))
+
+	##~~ SettingsPlugin mixin
+
+	def get_settings_defaults(self):
+		return dict(
+			# put your plugin's default settings here
+		)
+
+	##~~ AssetPlugin mixin
+
+	def get_assets(self):
+		# Define your plugin's asset files to automatically include in the
+		# core UI here.
+		return dict(
+			js=["js/hotspot_off.js"],
+			css=["css/hotspot_off.css"],
+			less=["less/hotspot_off.less"]
+		)
 
 	##~~ Softwareupdate hook
 
