@@ -10,10 +10,18 @@ from __future__ import absolute_import
 # Take a look at the documentation on what other plugin mixins are available.
 
 import octoprint.plugin
+import subprocess
 
 class Hotspot_offPlugin(octoprint.plugin.StartupPlugin):
 
-
+    def on_startup(self, host, port):
+        args = ['netconnectcli', 'stop_ap']
+        try:
+            r = subprocess.check_call(args)
+        except Exception as e:
+            r = 'Failed to run stop command.'
+        finally:
+            self._logger.info('### Stop Hotspot Results: {}'.format(r))
 
 	##~~ Softwareupdate hook
 
